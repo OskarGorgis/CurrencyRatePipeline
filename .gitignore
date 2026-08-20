@@ -1,0 +1,14 @@
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+
+# Test / tooling cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Pipeline data and generated output
+tables/
+charts/
