@@ -21,7 +21,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 import config
-from ingest_gold import TARGET_CURRENCIES
 
 logging.basicConfig(
     level=logging.INFO,
@@ -66,7 +65,7 @@ def plot_dynamics_by_currency(gold: pd.DataFrame, out_path: Path) -> Path:
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), facecolor=SURFACE)
     fig.suptitle("PLN exchange rate dynamics (NBP mid rate)", color=INK_PRIMARY, fontsize=14, fontweight="bold")
 
-    for ax, currency in zip(axes.flat, TARGET_CURRENCIES):
+    for ax, currency in zip(axes.flat, config.TARGET_CURRENCIES):
         series = gold[gold["currency"] == currency].sort_values("date")
         ax.plot(series["date"], series["mid"], color=CURRENCY_COLORS[currency], linewidth=1.8)
         ax.set_title(f"PLN/{currency}", color=INK_PRIMARY, fontsize=11, loc="left")
@@ -85,7 +84,7 @@ def plot_dynamics_indexed(gold: pd.DataFrame, out_path: Path) -> Path:
     """Overlay all four currencies on one axis, indexed to 100 at their first observation."""
     fig, ax = plt.subplots(figsize=(11, 6), facecolor=SURFACE)
 
-    for currency in TARGET_CURRENCIES:
+    for currency in config.TARGET_CURRENCIES:
         series = gold[gold["currency"] == currency].sort_values("date")
         valid = series.dropna(subset=["mid"])
         if valid.empty:
@@ -147,7 +146,7 @@ def compute_insights(gold: pd.DataFrame) -> pd.DataFrame:
     to compare, so its fall/rise fields are left as None.
     """
     rows = []
-    for currency in TARGET_CURRENCIES:
+    for currency in config.TARGET_CURRENCIES:
         series = gold[gold["currency"] == currency].sort_values("date").reset_index(drop=True)
 
         if series["mid"].notna().sum() == 0:

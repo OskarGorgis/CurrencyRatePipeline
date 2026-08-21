@@ -1,0 +1,10 @@
+name: currency-rate-pipeline
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pandas
+  - pyarrow
+  - requests
+  - matplotlib
+  - pytest

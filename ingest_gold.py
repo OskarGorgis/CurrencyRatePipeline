@@ -23,8 +23,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-TARGET_CURRENCIES = ["EUR", "USD", "GBP", "JPY"]
-
 
 def build_gold_table() -> Path:
     """Rebuild the gold analysis table from the current silver table."""
@@ -36,14 +34,14 @@ def build_gold_table() -> Path:
         )
     wide = pd.read_parquet(silver_path)
 
-    missing = [c for c in TARGET_CURRENCIES if c not in wide.columns]
+    missing = [c for c in config.TARGET_CURRENCIES if c not in wide.columns]
     if missing:
         raise ValueError(f"Silver table is missing expected currencies: {missing}")
 
-    wide = wide[["date"] + TARGET_CURRENCIES].sort_values("date").reset_index(drop=True)
+    wide = wide[["date"] + config.TARGET_CURRENCIES].sort_values("date").reset_index(drop=True)
 
     per_currency = []
-    for currency in TARGET_CURRENCIES:
+    for currency in config.TARGET_CURRENCIES:
         series = wide[["date", currency]].rename(columns={currency: "mid"})
         series["currency"] = currency
         series["daily_change"] = series["mid"].diff()

@@ -104,7 +104,7 @@ class NbpClient:
                 self._sleep_backoff(attempt)
                 continue
 
-            # Non-retryable, e.g. 400 Bad Request -> fail loudly, don't hide it
+            # Non-retryable, e.g. 400 Bad Request
             raise NbpApiError(
                 f"NBP API returned {response.status_code}"
                 f"[{start_date}..{end_date}]: {response.text[:200]}"
